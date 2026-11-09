@@ -12,7 +12,7 @@ const KEY='iron-tracker-v4';let state=null;
 function validPlan(p){return Array.isArray(p)&&p.length>0&&p.every(d=>d&&typeof d.name==='string'&&Array.isArray(d.ex)&&d.ex.length>0&&d.ex.every(e=>e&&typeof e.name==='string'&&Array.isArray(e.sets)&&e.sets.length>0&&e.sets.every(t=>t&&typeof t==='object'&&'reps' in t)));}
 function loadState(){let saved=null;try{saved=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(validPlan(saved?.plan))return saved;
   for(const key of ['iron-tracker-v3','iron-tracker-v2','iron-tracker-v1']){let old=null;try{old=JSON.parse(localStorage.getItem(key))}catch(e){}if(validPlan(old?.plan))return {plan:old.plan,history:Array.isArray(old.history)?old.history:[],day:Number(old.day)||0};}
-  return {plan:normalize(defaultPlan),history:Array.isArray(saved?.history)?saved.history:[],day:0};}
+  return {plan:[{name:'Моя тренировка',ex:[{name:'Первое упражнение',note:'',sets:[{weight:'',reps:10,done:false}]}]}],history:Array.isArray(saved?.history)?saved.history:[],day:0};}
 state=loadState();if(!validPlan(state.plan))state.plan=normalize(defaultPlan);if(!Array.isArray(state.history))state.history=[];
 let day=Math.max(0,Math.min(Number(state.day)||0,state.plan.length-1));
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}};save();
